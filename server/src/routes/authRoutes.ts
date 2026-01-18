@@ -23,7 +23,12 @@ router.post('/register', async (req, res) => {
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (err: any) {
-        res.status(500).json({ error: err.message });
+        console.error('Registration Error:', err);
+        // Return 500 with specific message for debugging (in production, hide details)
+        res.status(500).json({
+            error: err.message || 'Internal Server Error',
+            stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
+        });
     }
 });
 
